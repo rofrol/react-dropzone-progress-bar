@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone';
-import request from 'superagent';
+import { post } from 'axios';
 import { Line } from 'rc-progress';
 
 class App extends Component {
   state = {
     percent: 0
-  }
+  };
 
   onDrop = files => {
     this.setState({ percent: 0 });
@@ -16,22 +16,29 @@ class App extends Component {
       data.append('files[]', file, file.name);
     });
 
-    let req = request.post('http://localhost:3001');
-    req.on('progress', event => {
-      let percent = Math.floor(event.percent);
-      if (percent >= 100) {
-        this.setState({ percent: 100 });
-      } else {
-        this.setState({ percent: percent });
-      }
-    });
+    const url = 'http://localhost:3001';
+
+    const config = {
+      headers: { 'content-type': 'multipart/form-data' },
+      onUploadProgress: function(progressEvent) {
+        var percent = Math.round(progressEvent.loaded * 100 / progressEvent.total);
+        if (percent >= 100) {
+          this.setState({ percent: 100 });
+        } else {
+          this.setState({ percent });
+        }
+      }.bind(this)
+    };
 
     const that = this;
-    req.send(data);
-    req.end((err, res) => {
-      console.log('Successfully uploaded');
-    });
-
+    post(url, data, config)
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+        that.setState({ percent: 0 });
+      });
   };
 
   render() {

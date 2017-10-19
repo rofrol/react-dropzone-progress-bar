@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "axios": "^0.16.2",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -15,7 +16,6 @@
     "rc-progress": "^2.2.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-dropzone": "^4.2.0",
-    "superagent": "^3.6.3"
+    "react-dropzone": "^4.2.0"
   }
 }
