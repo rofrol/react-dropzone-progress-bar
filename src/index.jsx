@@ -20,14 +20,14 @@ class App extends Component {
 
     const config = {
       headers: { 'content-type': 'multipart/form-data' },
-      onUploadProgress: function(progressEvent) {
+      onUploadProgress: progressEvent => {
         var percent = Math.round(progressEvent.loaded * 100 / progressEvent.total);
         if (percent >= 100) {
           this.setState({ percent: 100 });
         } else {
           this.setState({ percent });
         }
-      }.bind(this)
+      }
     };
 
     const that = this;
