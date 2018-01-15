@@ -26,13 +26,14 @@ app.use(function (req, res, next) {
       next();
   });
 
+// `app.get('/', handler)` needed for CORS
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendStatus(200);
 });
 
 // It's very crucial that the file name matches the name attribute in your html
 app.post('/', upload.single('files[]'), (req, res) => {
-  res.redirect('/');
+  res.sendStatus(200)
 });
 
 app.listen(3001);
