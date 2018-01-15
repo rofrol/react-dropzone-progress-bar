@@ -1,8 +1,25 @@
 const express = require('express');
 const multer = require('multer');
-const upload = multer({
+const crypto = require('crypto');
+//const path = require('path');
+const mime = require('mime');
+
+const upload_simple = multer({
   dest: 'uploads/' // this saves your file into a directory called "uploads"
 });
+
+const storage = multer.diskStorage({
+  destination: 'uploads/',
+  filename: function (req, file, cb) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
+    });
+    //cb(null, file.fieldname + '-' + Date.now() + '.' + path.extname(file.originalname));
+  }
+});
+
+// use to this if you need control of file name
+const upload = multer({ storage });
 
 const app = express();
 
@@ -33,7 +50,7 @@ app.get('/', (req, res) => {
 
 // It's very crucial that the file name matches the name attribute in your html
 app.post('/', upload.single('files[]'), (req, res) => {
-  res.sendStatus(200)
+  res.status(200).send(req.file);
 });
 
 app.listen(3001);
