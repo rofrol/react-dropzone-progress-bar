@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 });
 
 // It's very crucial that the file name matches the name attribute in your html
-app.post('/', upload.single('files[]'), (req, res) => {
+app.post('/', upload.single('file'), (req, res) => {
   res.status(200).send(req.file);
 });
 
